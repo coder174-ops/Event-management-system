@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { AuthContext } from '../../context/AuthProvider'
 
 const CreateTask = () => {
+
+  const [userData,setUserData]=useContext(AuthContext)
 
  const [taskTitle, setTaskTitle] = useState('')
  const [taskDate, setTaskDate] = useState('')
@@ -8,19 +11,20 @@ const CreateTask = () => {
  const [descriptation, setDescriptation] = useState('')
  const [category, setCategory] = useState('')
 
- const [newTask, setNewTask] = useState({})
+ const [newTask, setNewTask] = useState({}) 
 
 const submitHandler=(e)=>{
    e.preventDefault();
 
    setNewTask({taskTitle,descriptation,taskDate,category,active:false,newTask:true,failed:false,completed:false})
 
-   const data=JSON.parse(localStorage.getItem('employees'));
+   const data=userData.employees;
+   console.log(data);
 
    data.forEach(function(elem){
        if(assignTo == elem.firstName){
          elem.tasks.push(newTask);
-        console.log(elem);
+        elem.taskCounts.newTask=elem.taskCounts.newTask+1;
        }
    })
 
@@ -30,7 +34,6 @@ const submitHandler=(e)=>{
    setDescriptation('');
    setCategory('');
 }
-
 
   return (
     <div className='flex items-start justify-center gap-30  px-4 py-2 bg-gray-700 mx-30 rounded-lg'>
